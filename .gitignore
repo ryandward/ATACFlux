@@ -1,0 +1,44 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.eggs/
+dist/
+build/
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+.env
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project-specific large files
+# Uncomment if you don't want to track these in git:
+# data/compounds_thermo.json
+# data/reactions_thermo.json
+# models/yeast-GEM.xml
+
+# eQuilibrator cached databases (should not be in repo)
+*.sqlite
+*.npz
+*.thermodb
+
+# Temporary/generated
+*.log
+*.tmp
+*.bak
+*.zip
