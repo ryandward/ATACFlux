@@ -314,7 +314,7 @@ For proton pumps where eQuilibrator's formula parser fails (all H⁺ on one side
 ## Setup
 
 ```bash
-pip install -r requirements.txt
+pipenv install -r requirements.txt
 ```
 
 Place `yeast-GEM.xml` in the `models/` directory.
