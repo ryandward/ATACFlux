@@ -1,0 +1,84 @@
+{
+  "_documentation": {
+    "description": "Literature standard reduction potentials (E°') for redox couples that eQuilibrator cannot calculate from group contribution methods. These are primarily metalloproteins (cytochromes) and quinones where the redox potential depends on the protein environment, not just chemical structure.",
+    "problem": "eQuilibrator uses group contribution methods that require atom-level structure (InChI). Cytochromes and other metalloproteins have no InChI because their properties depend on the protein fold and metal coordination, not the chemical formula alone. This results in ΔGf' = None and uncertainty = 100,000 kJ/mol.",
+    "solution": "Use eQuilibrator's RedoxCarrier class to inject literature reduction potentials. RedoxCarrier wraps a compound with a specified potential, and its get_stored_standard_dgf_prime() method returns -F×E (using n=1 internally).",
+    "n_electrons_handling": "IMPORTANT: RedoxCarrier always uses n=1. For multi-electron carriers (e.g., ubiquinone with n=2), the potential_mV field must be n × E°'. For ubiquinone: literature E°' = 45 mV, but we store 90 mV (2×45) so that -F×90mV = -8.7 kJ/mol = -nFE°'.",
+    "convention": "Potentials are given for the reduction half-reaction: Ox + ne⁻ → Red. The oxidized form is assigned E°' = 0 mV (reference), and the reduced form is assigned the effective potential (n × literature E°'). This ensures ΔGf'(red) - ΔGf'(ox) = -nFE°'.",
+    "validation": "Tested with r_0438 (Complex IV): Using cytochrome c E°' = 254 mV gives ΔG°' = -55.1 ± 0.8 kJ/mol. Manual calculation: (+24.5 from cyt c oxidation) + (-78.6 from O₂ reduction) = -54.1 kJ/mol. Agreement within 1 kJ/mol.",
+    "references": [
+      "Voet & Voet, Biochemistry, 4th ed., Table 18-1",
+      "Berg, Tymoczko & Stryer, Biochemistry, 8th ed., Chapter 18",
+      "Nicholls & Ferguson, Bioenergetics, 4th ed.",
+      "NIST Standard Reference Database 69: NIST Chemistry WebBook"
+    ]
+  },
+  "couples": {
+    "cytochrome_c": {
+      "name": "Cytochrome c",
+      "description": "Mitochondrial electron carrier between Complex III and Complex IV. Single heme c with Fe³⁺/Fe²⁺ redox center.",
+      "oxidized_kegg": "kegg:C00125",
+      "oxidized_name": "ferricytochrome c",
+      "reduced_kegg": "kegg:C00126",
+      "reduced_name": "ferrocytochrome c",
+      "potential_mV": 254,
+      "n_electrons": 1,
+      "reference": "Voet & Voet Table 18-1; varies 220-280 mV depending on organism"
+    },
+    "cytochrome_b5": {
+      "name": "Cytochrome b5",
+      "description": "Microsomal electron carrier. Single heme b with Fe³⁺/Fe²⁺ redox center. Involved in fatty acid desaturation and cytochrome P450 reactions.",
+      "oxidized_kegg": "kegg:C00996",
+      "oxidized_name": "ferricytochrome b5",
+      "reduced_kegg": "kegg:C00999",
+      "reduced_name": "ferrocytochrome b5",
+      "potential_mV": 5,
+      "n_electrons": 1,
+      "reference": "Strittmatter & Velick (1956); varies -5 to +20 mV depending on source"
+    },
+    "thiosulfate_tetrathionate": {
+      "name": "Thiosulfate/Tetrathionate",
+      "description": "Sulfur redox couple. S4O6²⁻ + 2e⁻ ↔ 2 S2O3²⁻. Used in iodometry and bacterial sulfur metabolism. Note: 2:1 stoichiometry - potential is per thiosulfate molecule (1e⁻ each).",
+      "oxidized_kegg": "kegg:C02084",
+      "oxidized_name": "tetrathionate",
+      "reduced_kegg": "kegg:C00320",
+      "reduced_name": "thiosulfate",
+      "potential_mV": 198,
+      "n_electrons": 1,
+      "reference": "Kurth et al. (2015) JACS 137:13232-13235. Direct measurement by protein film electrochemistry."
+    },
+    "ubiquinone_6": {
+      "name": "Ubiquinone-6 (Coenzyme Q6)",
+      "description": "Membrane-soluble electron carrier in the inner mitochondrial membrane. Shuttles electrons from Complexes I/II to Complex III. Yeast uses Q6 (6 isoprene units).",
+      "oxidized_kegg": "kegg:C17568",
+      "oxidized_name": "ubiquinone-6",
+      "reduced_kegg": "kegg:C00390",
+      "reduced_name": "ubiquinol-6",
+      "potential_mV": 90,
+      "n_electrons": 2,
+      "note": "Literature E°' = 45 mV, but RedoxCarrier assumes n=1. Use n×E°' = 2×45 = 90 mV to get correct ΔG = -8.7 kJ/mol",
+      "reference": "Voet & Voet Table 18-1; pH 7, membrane-bound form ~+45 mV"
+    }
+  },
+  "excluded_couples": {
+    "ferricyanide_ferrocyanide": {
+      "reason": "Artificial electron acceptor used in assays, not part of natural metabolism. KEGG IDs (C00176/C01352) may not match model IDs, causing incorrect calculations.",
+      "oxidized_kegg": "kegg:C00176",
+      "reduced_kegg": "kegg:C01352",
+      "potential_mV": 360
+    }
+  },
+  "expected_reactions": [
+    {"id": "r_0001", "name": "lactate:ferricytochrome-c oxidoreductase", "couples_used": ["cytochrome_c"]},
+    {"id": "r_0002", "name": "lactate:ferricytochrome-c oxidoreductase (D-lactate)", "couples_used": ["cytochrome_c"]},
+    {"id": "r_0003", "name": "lactate:ferricytochrome-c oxidoreductase", "couples_used": ["cytochrome_c"]},
+    {"id": "r_0004", "name": "lactate:ferricytochrome-c oxidoreductase", "couples_used": ["cytochrome_c"]},
+    {"id": "r_0437", "name": "cytochrome c peroxidase", "couples_used": ["cytochrome_c"]},
+    {"id": "r_0438", "name": "cytochrome-c oxidase (Complex IV)", "couples_used": ["cytochrome_c"]},
+    {"id": "r_0439", "name": "ubiquinol-cytochrome-c reductase (Complex III)", "couples_used": ["cytochrome_c", "ubiquinone_6"]},
+    {"id": "r_1021", "name": "succinate dehydrogenase (ubiquinone-6)", "couples_used": ["ubiquinone_6"]},
+    {"id": "r_0773", "name": "NADH:ubiquinone oxidoreductase", "couples_used": ["ubiquinone_6"]},
+    {"id": "r_4197", "name": "NADH-cytochrome b5 reductase", "couples_used": ["cytochrome_b5"]},
+    {"id": "r_4382", "name": "thiosulfate:ferricytochrome-c oxidoreductase", "couples_used": ["cytochrome_c", "thiosulfate_tetrathionate"]}
+  ]
+}

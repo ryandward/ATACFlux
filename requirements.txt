@@ -1,0 +1,5 @@
+flask>=2.0
+cobra>=0.26
+optlang>=1.6
+swiglpk>=1.4
+equilibrator-api>=0.4

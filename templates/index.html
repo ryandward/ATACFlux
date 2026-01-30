@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATACFlux</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="layout">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <h1>ATACFlux</h1>
+            <p class="subtitle">Metabolic flux analysis</p>
+            
+            <div class="card">
+                <h2>Model</h2>
+                <button class="btn" id="load-btn" onclick="loadModel()">Load yeast-GEM</button>
+                <div id="load-status"></div>
+                
+                <div id="model-stats" class="hidden">
+                    <div class="stat">
+                        <span class="stat-label">Reactions</span>
+                        <span class="stat-value" id="stat-reactions">-</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Metabolites</span>
+                        <span class="stat-value" id="stat-metabolites">-</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Genes</span>
+                        <span class="stat-value" id="stat-genes">-</span>
+                    </div>
+                    <button class="btn secondary" onclick="runFBA()">Run FBA</button>
+                    <div id="fba-status"></div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2>Thermodynamics</h2>
+                <div id="thermo-status">
+                    <span class="status info">Loading cache...</span>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2>Conditions</h2>
+                <div id="constraints-container">
+                    <p class="constraints-empty">Load model first</p>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2>Legend</h2>
+                <div class="legend">
+                    <div class="legend-item">
+                        <span class="rxn-thermo favorable">-45</span>
+                        <span class="legend-label">Irreversible forward (ΔG'° &lt; -30)</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="rxn-thermo reversible">12</span>
+                        <span class="legend-label">Reversible (-30 to +30)</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="rxn-thermo unfavorable">45</span>
+                        <span class="legend-label">Irreversible reverse (ΔG'° &gt; +30)</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="rxn-thermo transport">⇌</span>
+                        <span class="legend-label">Transport (no net reaction)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main content -->
+        <div class="main">
+            <h2>Reactions</h2>
+            <input type="search" id="rxn-search" placeholder="Search reactions..." oninput="searchReactions()">
+            <div class="filter-row">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="hide-zero-flux" onchange="toggleZeroFlux()">
+                    <span>Hide zero flux</span>
+                </label>
+            </div>
+            <div class="rxn-header">
+                <span>Flux</span>
+                <span>ΔG'°</span>
+                <span>Loc</span>
+                <span>ID</span>
+                <span>Name</span>
+            </div>
+            <ul class="rxn-list" id="rxn-list">
+                <li class="loading">Load model to browse reactions</li>
+            </ul>
+            <div class="pagination" id="pagination">
+                <button onclick="prevPage()" id="prev-btn" disabled>← Prev</button>
+                <span id="page-info">-</span>
+                <button onclick="nextPage()" id="next-btn" disabled>Next →</button>
+            </div>
+        </div>
+        
+        <!-- Detail panel -->
+        <div class="detail-panel" id="detail-panel">
+            <h2>Reaction Details</h2>
+            <div id="detail-content">
+                <p class="loading">Select a reaction</p>
+            </div>
+        </div>
+    </div>
+    
+    <script src="/static/js/api.js"></script>
+    <script src="/static/js/utils.js"></script>
+    <script src="/static/js/components/reactionList.js"></script>
+    <script src="/static/js/components/reactionDetail.js"></script>
+    <script src="/static/js/components/pathwayTracer.js"></script>
+    <script src="/static/js/components/conditionBuilder.js"></script>
+    <script src="/static/js/app.js"></script>
+    <script>App.init();</script>
+</body>
+</html>

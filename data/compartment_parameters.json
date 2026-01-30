@@ -1,0 +1,142 @@
+{
+  "models": {
+    "yeast-GEM": {
+      "description": "Compartment parameters for yeast-GEM (Saccharomyces cerevisiae)",
+      "default_conditions": {
+        "temperature": 298.15,
+        "ionic_strength": 0.1,
+        "ionic_strength_unit": "M"
+      },
+      "compartments": {
+        "c": {
+          "name": "cytoplasm",
+          "pH": 7.2,
+          "notes": "Reference compartment; robust to perturbation"
+        },
+        "m": {
+          "name": "mitochondrion",
+          "pH": 7.5,
+          "notes": "Mitochondrial matrix; 0.3-0.5 pH units more alkaline than cytosol"
+        },
+        "v": {
+          "name": "vacuole",
+          "pH": 6.0,
+          "notes": "Acidic; varies 5.5-6.5 depending on growth conditions"
+        },
+        "n": {
+          "name": "nucleus",
+          "pH": 7.2,
+          "notes": "Continuous with ER via nuclear pores"
+        },
+        "er": {
+          "name": "endoplasmic reticulum",
+          "pH": 7.2,
+          "notes": "Near-neutral; continuous with nuclear envelope"
+        },
+        "g": {
+          "name": "Golgi",
+          "pH": 6.6,
+          "notes": "Mildly acidic; cis/medial Golgi pH 6.6-6.7"
+        },
+        "p": {
+          "name": "peroxisome",
+          "pH": 6.0,
+          "notes": "Acidic; ~5.8-6.0 based on NMR studies"
+        },
+        "e": {
+          "name": "extracellular",
+          "pH": 5.5,
+          "notes": "Growth media dependent; typically 5.0-7.0"
+        },
+        "ce": {
+          "name": "cell envelope",
+          "pH": 5.5,
+          "notes": "Periplasmic space; equilibrates with extracellular"
+        },
+        "lp": {
+          "name": "lipid particle",
+          "pH": 7.2,
+          "notes": "No aqueous lumen; uses cytosolic pH for associated reactions"
+        },
+        "erm": {
+          "name": "endoplasmic reticulum membrane",
+          "pH": 7.2,
+          "notes": "Membrane compartment; cytosolic face"
+        },
+        "vm": {
+          "name": "vacuolar membrane",
+          "pH": 7.2,
+          "notes": "Membrane compartment; cytosolic face"
+        },
+        "gm": {
+          "name": "Golgi membrane",
+          "pH": 7.2,
+          "notes": "Membrane compartment; cytosolic face"
+        },
+        "mm": {
+          "name": "mitochondrial membrane",
+          "pH": 7.0,
+          "notes": "Inner membrane; IMS face (similar to cytosol)"
+        }
+      },
+      "membranes": {
+        "m-c": {
+          "description": "Mitochondrial inner membrane (matrix to cytosol/IMS)",
+          "inner": "m",
+          "outer": "c",
+          "potential_mV": -160,
+          "potential_notes": "Matrix negative; range -140 to -180 mV depending on respiratory state"
+        },
+        "v-c": {
+          "description": "Vacuolar membrane",
+          "inner": "v",
+          "outer": "c",
+          "potential_mV": 30,
+          "potential_notes": "Lumen positive; V-ATPase driven; range +20 to +40 mV"
+        },
+        "e-c": {
+          "description": "Plasma membrane",
+          "inner": "c",
+          "outer": "e",
+          "potential_mV": -100,
+          "potential_notes": "Cytosol negative; range -50 to -120 mV depending on conditions"
+        },
+        "p-c": {
+          "description": "Peroxisomal membrane",
+          "inner": "p",
+          "outer": "c",
+          "potential_mV": 0,
+          "potential_notes": "Assumed negligible; poorly characterized"
+        },
+        "er-c": {
+          "description": "ER membrane",
+          "inner": "er",
+          "outer": "c",
+          "potential_mV": 0,
+          "potential_notes": "Assumed negligible"
+        },
+        "g-c": {
+          "description": "Golgi membrane",
+          "inner": "g",
+          "outer": "c",
+          "potential_mV": 0,
+          "potential_notes": "Assumed negligible"
+        },
+        "n-c": {
+          "description": "Nuclear envelope",
+          "inner": "n",
+          "outer": "c",
+          "potential_mV": 0,
+          "potential_notes": "Nuclear pores allow equilibration"
+        }
+      },
+      "references": [
+        "Orij et al. 2009 - Cytosolic and mitochondrial pH in S. cerevisiae",
+        "Srivastava et al. 2020 - Golgi pH sensor in S. cerevisiae",
+        "van Roermund et al. 2004 - Peroxisome pH by NMR",
+        "Molecular Biology of the Cell (Alberts) - Mitochondrial membrane potential",
+        "Peña et al. - Plasma membrane potential in yeast"
+      ]
+    }
+  }
+}
