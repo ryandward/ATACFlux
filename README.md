@@ -2,6 +2,8 @@
 
 Thermodynamic and regulatory flux analysis for yeast metabolic engineering.
 
+<img width="955" height="983" alt="image" src="https://github.com/user-attachments/assets/3789d5f3-a8d4-45b9-a8a0-4c9e746276b8" />
+
 ## Data Files
 
 ### `data/compounds_thermo.json`
